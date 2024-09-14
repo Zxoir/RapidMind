@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rapid_mind/sequence_memory_page.dart';
 import 'math_quiz_page.dart';
 import 'gunslinger_page.dart';
 
@@ -15,11 +16,11 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blueAccent,
               ),
-              child: const Text(
+              child: Text(
                 '🎮 Games',
                 style: TextStyle(
                   color: Colors.white,
@@ -45,11 +46,20 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+            ListTile(
+              title: const Text('🧩 Memory Sequence'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SequenceMemoryPage()),
+                );
+              },
+            )
           ],
         ),
       ),
-      body: Center(
-        child: const Text('Welcome to the games app by Zxoir'),
+      body: const Center(
+        child: Text('Welcome to the games app by Zxoir'),
       ),
     );
   }

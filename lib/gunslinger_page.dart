@@ -64,7 +64,7 @@ class _GunslingerPageState extends State<GunslingerPage> {
             child: Center(
               child: Text(
                 _isGameActive && !_stopwatch.isRunning ? 'Wait for it...' : _resultMessage,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   color: Colors.white,
                 ),
