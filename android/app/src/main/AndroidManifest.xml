@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="rapid_mind"
+        android:label="Rapid Mind"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
