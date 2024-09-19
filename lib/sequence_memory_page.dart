@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SequenceMemoryPage extends StatefulWidget {
   const SequenceMemoryPage({super.key});
@@ -16,11 +17,28 @@ class _SequenceMemoryState extends State<SequenceMemoryPage> {
   bool _isAnimating = true;
   final List<Color> _cellColors = List.generate(9, (_) => Colors.grey);
   int _level = 0;
+  int _highestLevel = 0;
 
   @override
   void initState() {
     super.initState();
+    _loadHighestLevel();
     _startNewGame();
+  }
+
+  void _loadHighestLevel() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _highestLevel = prefs.getInt('highestLevel') ?? 0;
+    });
+  }
+
+  void _saveHighestLevel() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_level > _highestLevel) {
+      _highestLevel = _level;
+      await prefs.setInt('highestLevel', _highestLevel);
+    }
   }
 
   void _startNewGame() {
@@ -98,6 +116,10 @@ class _SequenceMemoryState extends State<SequenceMemoryPage> {
   }
 
   void _showGameOverDialog() {
+    if (_level > _highestLevel) {
+      _saveHighestLevel();
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -158,6 +180,13 @@ class _SequenceMemoryState extends State<SequenceMemoryPage> {
             'Level: $_level',
             style: const TextStyle(
               fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            'Highest Level: $_highestLevel',
+            style: const TextStyle(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),

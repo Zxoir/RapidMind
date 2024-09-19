@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GunslingerPage extends StatefulWidget {
   const GunslingerPage({super.key});
@@ -15,6 +16,29 @@ class _GunslingerPageState extends State<GunslingerPage> {
   bool _isGameActive = false;
   late Stopwatch _stopwatch;
   late Timer _timer;
+  int _fastestReactionTime = 99999999;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFastestReactionTime();
+    _startGame();
+  }
+
+  void _loadFastestReactionTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _fastestReactionTime = prefs.getInt('fastestReactionTime') ?? 0;
+    });
+  }
+
+  void _saveFastestReactionTime(int reactionTime) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (reactionTime < _fastestReactionTime) {
+      _fastestReactionTime = reactionTime;
+      await prefs.setInt('fastestReactionTime', _fastestReactionTime);
+    }
+  }
 
   void _startGame() {
     setState(() {
@@ -36,14 +60,17 @@ class _GunslingerPageState extends State<GunslingerPage> {
     if (_isGameActive) {
       _isGameActive = false;
       setState(() {
+        int reactionTime = _stopwatch.elapsedMilliseconds;
         if (!_stopwatch.isRunning) {
           _resultMessage = 'You lost!';
-        } else if (_stopwatch.elapsedMilliseconds < 1000) {
-          _resultMessage =
-              'You won! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
+        } else if (reactionTime < 1000) {
+          if (reactionTime < _fastestReactionTime) {
+            _saveFastestReactionTime(reactionTime);
+          }
+
+          _resultMessage = 'You won! Reaction time: $reactionTime ms';
         } else {
-          _resultMessage =
-              'You lost! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
+          _resultMessage = 'You lost! Reaction time: $reactionTime ms';
         }
       });
       _stopwatch.stop();
@@ -57,28 +84,43 @@ class _GunslingerPageState extends State<GunslingerPage> {
       appBar: AppBar(
         title: const Text('Gunslinger'),
       ),
-      body: Center(
-        child: GestureDetector(
-          onTap: _tapScreen,
-          child: Container(
-            color: _isGameActive && _stopwatch.isRunning
-                ? Colors.green
-                : Colors.grey,
-            width: double.infinity,
-            height: double.infinity,
-            child: Center(
-              child: Text(
-                _isGameActive && !_stopwatch.isRunning
-                    ? 'Wait for it...'
-                    : _resultMessage,
-                style: const TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
+      body: Stack(
+        children: [
+          Center(
+            child: GestureDetector(
+              onTap: _tapScreen,
+              child: Container(
+                color: _isGameActive && _stopwatch.isRunning
+                    ? Colors.green
+                    : Colors.grey,
+                width: MediaQuery.sizeOf(context).width,
+                height: MediaQuery.sizeOf(context).height,
+                child: Center(
+                  child: Text(
+                    _isGameActive && !_stopwatch.isRunning
+                        ? 'Wait for it...'
+                        : _resultMessage,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+          Positioned(
+            left: 16,
+            bottom: 16,
+            child: Text(
+              'Fastest Reaction: $_fastestReactionTime ms',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _startGame,

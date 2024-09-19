@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MathQuizPage extends StatefulWidget {
   const MathQuizPage({super.key});
@@ -16,13 +17,31 @@ class _MathQuizPageState extends State<MathQuizPage> {
   late String _selectedAnswer;
   bool _isButtonDisabled = false;
   int _correctStreak = 0;
+  int _highestStreak = 0;
   String _feedbackMessage = '';
   final Random _random = Random();
 
   @override
   void initState() {
     super.initState();
+    _loadHighestStreak();
     _generateQuestion();
+  }
+
+  void _loadHighestStreak() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _highestStreak = prefs.getInt('highestStreak') ?? 0;
+    });
+  }
+
+  void _saveHighestStreak() async {
+    if (_correctStreak <= _highestStreak) {
+      return;
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _highestStreak = _correctStreak;
+    await prefs.setInt('highestStreak', _highestStreak);
   }
 
   void _generateQuestion() {
@@ -87,6 +106,10 @@ class _MathQuizPageState extends State<MathQuizPage> {
       if (answer == _correctAnswer) {
         _feedbackMessage = 'Correct!';
         _correctStreak++;
+
+        if (_correctStreak > _highestStreak) {
+          _saveHighestStreak();
+        }
       } else {
         _feedbackMessage = 'Wrong! The correct answer is $_correctAnswer.';
         _correctStreak = 0;
@@ -162,6 +185,14 @@ class _MathQuizPageState extends State<MathQuizPage> {
                         ),
                       );
                     }).toList(),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Highest Streak: $_highestStreak',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
