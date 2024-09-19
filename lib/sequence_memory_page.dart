@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:collection/collection.dart';
+
 import 'package:flutter/material.dart';
 
 class SequenceMemoryPage extends StatefulWidget {
@@ -77,20 +77,23 @@ class _SequenceMemoryState extends State<SequenceMemoryPage> {
       });
     });
 
-    if (_userSequence.length == _sequence.length) {
+    if (_sequence.isNotEmpty) {
       _checkSequence();
     }
   }
 
   void _checkSequence() {
-    if (_userSequence.length == _sequence.length &&
-        const ListEquality().equals(_userSequence, _sequence)) {
+    if (_userSequence[_userSequence.length - 1] !=
+        _sequence[_userSequence.length - 1]) {
+      _showGameOverDialog();
+      return;
+    }
+
+    if (_userSequence.length == _sequence.length) {
       _level++;
       _userSequence.clear();
       _generateSequence();
       _animateSequence();
-    } else {
-      _showGameOverDialog();
     }
   }
 
@@ -116,21 +119,23 @@ class _SequenceMemoryState extends State<SequenceMemoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-    title: const Text('Memory Sequence'),
-    ),
+      appBar: AppBar(
+        title: const Text('Memory Sequence'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final gridSize = min(constraints.maxWidth, constraints.maxHeight) * 0.8;
+                final gridSize =
+                    min(constraints.maxWidth, constraints.maxHeight) * 0.8;
                 return SizedBox(
                   width: gridSize,
                   height: gridSize,
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                     ),
                     itemCount: 9,

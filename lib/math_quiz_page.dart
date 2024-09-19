@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class MathQuizPage extends StatefulWidget {
   const MathQuizPage({super.key});
@@ -42,7 +43,8 @@ class _MathQuizPageState extends State<MathQuizPage> {
     while (options.length < 4) {
       // If its addition then it generates a random number between 1-19
       // If its multiplication it generates a random number between 1-99
-      int option = operator == '+' ? _random.nextInt(19) + 1 : _random.nextInt(99) + 1;
+      int option =
+          operator == '+' ? _random.nextInt(19) + 1 : _random.nextInt(99) + 1;
       if (!options.contains(option)) {
         options.add(option);
       }
@@ -109,56 +111,60 @@ class _MathQuizPageState extends State<MathQuizPage> {
         child: _question.isEmpty
             ? const CircularProgressIndicator()
             : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _question,
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _feedbackMessage,
-              style: TextStyle(
-                color: _feedbackMessage.startsWith('Correct') ? Colors.green : Colors.red,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            if (_correctStreak >= 3)
-              Text(
-                'Streak: $_correctStreak 🔥',
-                style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.headlineSmall?.fontSize,
-                    color: Colors.amber
-                ),
-              ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _options.map((option) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _getButtonColor(option),
-                      minimumSize: const Size(60, 60),
-                    ),
-                    onPressed: () => _checkAnswer(option),
-                    child: Text(
-                      option,
-                      style: TextStyle(
-                        color: _getTextColor(option),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    _question,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    _feedbackMessage,
+                    style: TextStyle(
+                      color: _feedbackMessage.startsWith('Correct')
+                          ? Colors.green
+                          : Colors.red,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+                  const SizedBox(height: 20),
+                  if (_correctStreak >= 3)
+                    Text(
+                      'Streak: $_correctStreak 🔥',
+                      style: TextStyle(
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontSize,
+                          color: Colors.amber),
+                    ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _options.map((option) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _getButtonColor(option),
+                            minimumSize: const Size(60, 60),
+                          ),
+                          onPressed: () => _checkAnswer(option),
+                          child: Text(
+                            option,
+                            style: TextStyle(
+                              color: _getTextColor(option),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
       ),
     );
   }

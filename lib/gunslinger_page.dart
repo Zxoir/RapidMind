@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class GunslingerPage extends StatefulWidget {
   const GunslingerPage({super.key});
@@ -38,9 +39,11 @@ class _GunslingerPageState extends State<GunslingerPage> {
         if (!_stopwatch.isRunning) {
           _resultMessage = 'You lost!';
         } else if (_stopwatch.elapsedMilliseconds < 1000) {
-          _resultMessage = 'You won! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
+          _resultMessage =
+              'You won! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
         } else {
-          _resultMessage = 'You lost! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
+          _resultMessage =
+              'You lost! Reaction time: ${_stopwatch.elapsedMilliseconds} ms';
         }
       });
       _stopwatch.stop();
@@ -58,12 +61,16 @@ class _GunslingerPageState extends State<GunslingerPage> {
         child: GestureDetector(
           onTap: _tapScreen,
           child: Container(
-            color: _isGameActive && _stopwatch.isRunning ? Colors.green : Colors.grey,
+            color: _isGameActive && _stopwatch.isRunning
+                ? Colors.green
+                : Colors.grey,
             width: double.infinity,
             height: double.infinity,
             child: Center(
               child: Text(
-                _isGameActive && !_stopwatch.isRunning ? 'Wait for it...' : _resultMessage,
+                _isGameActive && !_stopwatch.isRunning
+                    ? 'Wait for it...'
+                    : _resultMessage,
                 style: const TextStyle(
                   fontSize: 24,
                   color: Colors.white,
