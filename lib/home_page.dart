@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rapid_mind/english_spelling_page.dart';
 import 'package:rapid_mind/sequence_memory_page.dart';
 
 import 'gunslinger_page.dart';
@@ -55,6 +56,16 @@ class HomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const SequenceMemoryPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('✍ English Spelling'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EnglishSpellingPage()),
                 );
               },
             )

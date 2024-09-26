@@ -1,13 +1,15 @@
-<p align="center">
+<p text-align="center">
 <img src="assets/icon.png" alt="icon">
 </p>
 
 ## Overview
-This Flutter application features two simple games: Math Quiz and Gunslinger. Users can navigate between these games using a navigation drawer. The Math Quiz challenges players with math problems, while Gunslinger tests their reaction time.
+This Flutter application features four engaging games: Math Quiz, Gunslinger, Memory Sequence, and English Spelling Quiz. Users can navigate between these games using a navigation drawer. Each game offers a unique challenge, from math problems to reaction time tests.
 
 ## Features
-Math Quiz: Answer math questions with addition and multiplication. Track correct streaks and receive feedback on your answers.
-Gunslinger: A reaction time game where you tap the screen as quickly as possible when it turns green. Track your reaction time and see if you are fast enough to win.
+* **Math Quiz**: Answer math questions with addition and multiplication. Track correct streaks and receive feedback on your answers.
+* **Gunslinger**: A reaction time game where you tap the screen as quickly as possible when it turns green. Track your reaction time and see if you are fast enough to win.
+* **Memory Sequence**: Follow a growing sequence of colors or sounds, testing your memory and concentration.
+* **English Spelling Quiz**: Listen to a word and spell it correctly to enhance your spelling skills.
 
 ## Game Details
 ### Math Quiz
@@ -21,6 +23,17 @@ Gunslinger: A reaction time game where you tap the screen as quickly as possible
 *   Users must tap the screen as quickly as possible.
 *   If tapped within 1 second after the screen turns green, the user wins. Otherwise, the user loses.
 *   Displays the reaction time or a message if the user missed the opportunity.
+
+### Memory Sequence
+* Presents a sequence of colors or sounds that users must repeat.
+* Increases in difficulty as players progress through the levels.
+* Tests both memory and attention skills.
+
+### English Spelling Quiz
+
+* Plays a sound of a word, prompting users to spell it correctly.
+* Provides immediate feedback on spelling accuracy.
+* Enhances vocabulary and spelling skills through repetitive practice.
 
 ## Getting Started
 ### Prerequisites
